@@ -18,9 +18,20 @@
 
 # FLEX: Inheritable Intelligence via Forward Learning from Scaling Experience
 
+[![arXiv](https://img.shields.io/badge/arXiv-2511.06449-b31b1b.svg)](https://arxiv.org/abs/2511.06449)
+
+</div>
+
 The official codebase for our paper, FLEX: Inheritable Intelligence via Forward Learning from Scaling Experience.
 
-**Paper:** [arXiv:2511.06449](https://arxiv.org/abs/2511.06449)
+---
+
+## 🔥 News
+
+- **[2025/11]** We release our paper on arXiv! Check out [FLEX: Inheritable Intelligence via Forward Learning from Scaling Experience](https://arxiv.org/abs/2511.06449).
+<!-- - **[2025/11]** Code, datasets, and trained experience libraries are now available! -->
+
+---
 
 ## Introduction
 Welcome to **F**orward **L**earning from **Ex**perience (FLEX), a novel learning paradigm that shifts learning from modifying model parameters to constructing and leveraging an evolvable experience library.
