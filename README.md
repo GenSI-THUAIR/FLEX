@@ -1,7 +1,15 @@
 <div align="center">
-    <img src="asset/AIRlogo.png" height="80">
-    <img src="asset/gensi_logo_black.png" height="80">
-    <img src="asset/seed_logo.png" height="80">
+    <table style="width: 100%; border: none;">
+        <tr>
+            <td align="left" style="width: 50%; border: none;">
+                <img src="asset/seed_logo.png" height="20">
+            </td>
+            <td align="right" style="width: 50%; border: none;">
+                <img src="asset/AIRlogo.png" height="20" style="margin-right: 20px;">
+                <img src="asset/gensi_logo_black.png" height="20">
+            </td>
+        </tr>
+    </table>
 </div>
 
 ---
@@ -11,6 +19,8 @@
 # FLEX: Inheritable Intelligence via Forward Learning from Scaling Experience
 
 The official codebase for our paper, FLEX: Inheritable Intelligence via Forward Learning from Scaling Experience.
+
+**Paper:** [arXiv:2511.06449](https://arxiv.org/abs/2511.06449)
 
 ## Introduction
 Welcome to **F**orward **L**earning from **Ex**perience (FLEX), a novel learning paradigm that shifts learning from modifying model parameters to constructing and leveraging an evolvable experience library.
@@ -46,4 +56,3 @@ If you use FLEX in your research, please cite our paper:
 }
 ```
 
-**Paper:** [arXiv:2511.06449](https://arxiv.org/abs/2511.06449)
