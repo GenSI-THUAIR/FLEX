@@ -48,8 +48,9 @@ The following picture exhibits the differences between gradient-based learning a
 We have also discovered **two exciting features** of FLEX:
 1. **The scaling law** for the experience library: agent performance scales predictably with accumulated knowledge and revealing a path towards a collaborative experience ecosystem.
 2. **Intelligence Inheritance**: Distilled experience can be transferred between agents in a plug-and-play manner, enabling instant knowledge assimilation and bypassing redundant learning
+
 ## Getting Started
-We will release the code, datasets, trained experience libraries soon. Stay tuned!
+We are very eager to open-source our code. However, it is currently undergoing a company-level review process at ByteDance, which may take some time (potentially a few months). We will release the code immediately once the approval is granted. Stay tuned!
 
 ## Citation
 
