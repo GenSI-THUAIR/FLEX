@@ -1,0 +1,993 @@
+{
+  "version": "2.0",
+  "created_at": "2025-10-13T19:28:42.743838",
+  "library": {
+    "golden": [
+      {
+        "method": "**Problem Category:** Single-step retrosynthetic analysis with protecting group chemistry.\n\n**General Method:**\n1. **Analyze the product structure systematically**: Break down the target molecule into its key functional groups, protecting groups, and structural motifs. Identify chiral centers, linkages, and any unusual features.\n\n2. **Identify the most obvious disconnection point**: Look for common synthetic transformations (C-C bond formation, functional group interconversions, protecting group manipulations).\n\n3. **When initial hypothesis fails, carefully analyze the feedback**: Pay special attention to structural differences between your prediction and the correct answer. Look for missing or extra functional groups.\n\n4. **Recognize protecting group patterns**: If the product has a free functional group (amine, alcohol, carboxylic acid), consider that the reactant might have that group protected. Common protecting groups include Cbz (benzyloxycarbonyl), Boc (tert-butoxycarbonyl), Fmoc, TBDMS, etc.\n\n5. **Work backwards from the difference**: If the product has structure A and the correct reactant has structure A + protecting group B, the transformation is deprotection of B.\n\n6. **Verify the complete structure**: Ensure all other parts of the molecule (stereochemistry, existing functional groups, linkages) remain unchanged between reactant and product.\n\n7. **Format the answer correctly**: Provide only the SMILES string(s) in the answer tags, with multiple reactants separated by dots if needed.",
+        "rules": [
+          {
+            "rule": "When a retrosynthetic prediction is incorrect, focus on the STRUCTURAL DIFFERENCES between your answer and the correct answer rather than defending your original reasoning.",
+            "examples": [
+              "After receiving feedback, the solver stated: 'The verifier correctly identified that: 1. This is NOT a urea formation reaction 2. This is a deprotection reaction... The key difference between reactant and product is the protecting group on the ε-amino group of lysine'",
+              "The solver explicitly compared structures: 'Product: ...CCCCN... (FREE primary amine)' vs 'Reactant: ...CCCCNC(=O)OCc1ccccc1... (Cbz-protected)'"
+            ]
+          },
+          {
+            "rule": "In retrosynthesis, if a product contains a free amine (or other nucleophilic group) and the transformation is described as single-step, strongly consider protecting group removal as the transformation type.",
+            "examples": [
+              "The solver recognized: 'The product has a free amine: CCCCN' and 'The reactant should have this amine protected'",
+              "Correct identification: 'This is a deprotection reaction - specifically Cbz (benzyloxycarbonyl) deprotection'"
+            ]
+          },
+          {
+            "rule": "Learn to recognize common protecting group structures in SMILES notation, particularly carbamate-based protecting groups like Cbz: NC(=O)OCc1ccccc1.",
+            "examples": [
+              "The solver correctly identified: 'Cbz protecting group: -NC(=O)OCc1ccccc1 (also written as -NHCbz or -NHCO2Bn)'",
+              "Proper structural placement: 'So the side chain should be: CCCCNC(=O)OCc1ccccc1'"
+            ]
+          },
+          {
+            "rule": "When analyzing complex molecules, systematically identify all functional groups and their states (protected vs. free) before proposing a disconnection.",
+            "examples": [
+              "Initial analysis: 'Breaking down the structure: - A methyl ester: COC(=O) - An amino acid derivative with a chiral center: [C@H](CCCCN) - A urea linkage: NC(=O)N'",
+              "Revised analysis after feedback: 'The lysine side chain has a FREE primary amine: CCCCN' and 'The α-amino group has the urea linkage to the phenol'"
+            ]
+          },
+          {
+            "rule": "Don't assume the most 'interesting' or complex bond formation is the key step; sometimes the transformation is a simple deprotection or functional group interconversion.",
+            "examples": [
+              "Initial incorrect assumption: 'The urea linkage NC(=O)N is the most likely point of disconnection'",
+              "Corrected understanding: 'The verifier correctly identified that... the urea linkage already exists in the reactant... This is a protecting group removal'"
+            ]
+          },
+          {
+            "rule": "After receiving corrective feedback, explicitly acknowledge the error, restate the correct interpretation, and rebuild the solution from this corrected foundation.",
+            "examples": [
+              "Acknowledgment: 'I need to reconsider the retrosynthesis based on the verifier's feedback'",
+              "Restatement: 'The verifier correctly identified that: 1. This is NOT a urea formation reaction 2. This is a deprotection reaction'",
+              "Rebuilding: 'Correct Retrosynthetic Analysis: The single-step transformation is: - Cbz deprotection of the ε-amino group'"
+            ]
+          },
+          {
+            "rule": "When multiple bonds could be disconnected, prioritize the most common and straightforward transformations (amide formation, ester formation) over more complex reactions (C-S bond formation via SNAr).",
+            "examples": [
+              "After initial failure with C-S bond disconnection, the solver recognized: 'The most straightforward single-step synthesis is **amide bond formation**' which is 'one of the most common transformations in organic synthesis.'",
+              "The correct answer involved simple amide coupling (carboxylic acid + amine → amide) rather than the initially proposed thioether formation."
+            ]
+          },
+          {
+            "rule": "When analyzing complex molecules with multiple functional groups, distinguish between bonds that were formed in THIS step versus bonds that were already present in the starting materials.",
+            "examples": [
+              "The verifier pointed out: 'The thioether linkage to the dichloropyridine was already present in the carboxylic acid reactant.'",
+              "The solver corrected their understanding: 'This contains the thiophene ring with... Thioether linkage to dichloropyridine (already formed)'"
+            ]
+          },
+          {
+            "rule": "Verify that proposed reactants are chemically sensible - simple, stable molecules that could reasonably be starting materials rather than complex intermediates.",
+            "examples": [
+              "The correct reactants were: '8-aminoquinoline' (a simple, commercially available amine) and a carboxylic acid (a stable, isolable compound)",
+              "The incorrect proposal involved a thiol derivative that would be less stable and less likely to be a discrete starting material"
+            ]
+          },
+          {
+            "rule": "For reductive amination disconnections, recognize the N-CH2-Ar pattern and disconnect to amine + aldehyde, preserving all other structural features in the aldehyde component.",
+            "examples": [
+              "Correct identification: 'Disconnect the N-CH2 bond: Reactant 1: Diethylamine → CCNCC, Reactant 2: The corresponding benzaldehyde with the rest of the structure intact'",
+              "The aldehyde was correctly constructed: 'Cc1nc(-c2ccc(C=O)cc2)sc1COc1ccc([C@H](CC(=O)N2C(=O)OC[C@@H]2Cc2ccccc2)c2ccon2)cc1' where C=O replaces the CH2N(CC)CC group."
+            ]
+          },
+          {
+            "rule": "When constructing reactant SMILES, maintain all stereochemical information and complex substituents exactly as they appear in the product.",
+            "examples": [
+              "The chiral centers [C@H] and [C@@H] were preserved in the aldehyde reactant.",
+              "All complex groups (oxazolidinone, furan ring, ether linkage) remained intact: 'All other parts of the molecule remain intact, including the ether linkage, the thiazole ring, the chiral center, and the oxazolidinone.'"
+            ]
+          },
+          {
+            "rule": "Use canonical SMILES representations for simple molecules to ensure exact matching with expected answers.",
+            "examples": [
+              "Diethylamine was correctly represented as 'CCNCC' rather than alternative forms like 'CCN(CC)' or 'N(CC)CC'.",
+              "The solver noted: 'Diethylamine → CCNCC (or CCN(CC) but canonical form is CCNCC)'"
+            ]
+          },
+          {
+            "rule": "When verifier feedback indicates a fundamental error in disconnection strategy, focus on identifying which structural fragment should be preserved versus which should be modified. Don't rebuild from scratch—make targeted corrections.",
+            "examples": [
+              "After feedback stating 'The azetidine ring (NCC5CNC5) should remain attached to the aromatic system in Reactant 1', the solver correctly preserved this entire fragment: 'Replace CN(C(CF)CF)C with CNC (azetidine with NH)' rather than removing the azetidine entirely."
+            ]
+          },
+          {
+            "rule": "For complex molecules, make incremental changes between attempts. When correcting an error, modify only the specific substructure identified as incorrect while keeping all other parts identical.",
+            "examples": [
+              "In Round 2, the solver kept the entire main scaffold unchanged: 'CC1(C)CCC(CN2CCN(c3ccc(C(=O)NS(=O)(=O)c4ccc(NCC5CNC5)...' and only modified the azetidine nitrogen substituent from N(C(CF)CF) to NH."
+            ]
+          },
+          {
+            "rule": "When verifier feedback provides the exact ground truth structure, use detailed comparison to identify the minimal set of changes needed. Parse the SMILES character-by-character if necessary to spot subtle differences.",
+            "examples": [
+              "The solver compared 'c4ccc(N)c([N+](=O)[O-])c4' (predicted) with 'c4ccc(NCC5CNC5)c([N+](=O)[O-])c4' (ground truth) to identify that the azetidine ring was missing in the first attempt."
+            ]
+          },
+          {
+            "rule": "In retrosynthetic analysis, carbamate and ester formations are often final steps because they involve protecting or functionalizing amines/alcohols that need to be free for earlier reactions.",
+            "examples": [
+              "The verifier revealed that 'carbamate formation is the actual final step' and the ground truth showed 'The complete phenoxy-pyrimidine with free piperidine NH' as a reactant, indicating the aryl ether was formed before the carbamate."
+            ]
+          },
+          {
+            "rule": "Chloroformates (R-O-C(=O)-Cl) are classic reagents for carbamate formation. Recognizing this reagent class helps identify carbamate disconnections.",
+            "examples": [
+              "After correction, the solver identified 'Reactant 2: Cyclopentyl chloroformate (the acylating agent) - Structure: O=C(Cl)OC1CCCC1' and noted 'This reacts with the free NH to form the carbamate.'"
+            ]
+          },
+          {
+            "rule": "Verify your proposed retrosynthesis by mentally running the forward reaction. Can the reactants you propose actually combine to give the product through a known mechanism?",
+            "examples": [
+              "The solver verified: 'Reaction: amine + chloroformate → carbamate + HCl' and confirmed 'This matches the ground truth reactants provided by the verifier.'"
+            ]
+          },
+          {
+            "rule": "When multiple chemically plausible disconnections exist for a retrosynthesis problem, systematically analyze which fragments are pre-assembled versus which are coupled in the final step.",
+            "examples": [
+              "The model initially proposed: bromoimidazole with phenyl-pyrazole attached + cyanopyridine boronic acid. After feedback, recognized the ground truth required: bromoimidazole with cyanopyridine attached + phenyl-pyrazole boronic acid. Both are valid Suzuki couplings, but represent different synthetic routes."
+            ]
+          },
+          {
+            "rule": "When verifier feedback indicates a mismatch, perform a detailed structural comparison between predicted and ground truth reactants to identify the exact point of divergence.",
+            "examples": [
+              "The verifier identified: 'You have proposed the opposite disconnection from the ground truth.' The model then systematically compared which aryl group was pre-attached to the bromoimidazole core in each case."
+            ]
+          },
+          {
+            "rule": "When correcting an error, explicitly state what was wrong and what the correction is, demonstrating understanding rather than just providing a new answer.",
+            "examples": [
+              "'Ground Truth Disconnection: The correct single-step retrosynthesis involves: 1. Reactant 1: Cn1cnc(-c2cc(C#N)ccn2)c1Br... 2. Reactant 2: OB(O)c1ccc(-n2cccn2)cc1...' This explicit breakdown shows clear understanding of the correction."
+            ]
+          },
+          {
+            "rule": "When analyzing complex molecules with multiple potential disconnection sites, prioritize C-C bond formations (especially aromatic-aromatic couplings) over C-O or C-N formations, as cross-coupling reactions (Suzuki, Negishi, Stille) are extremely common in modern synthesis.",
+            "examples": [
+              "The verifier correctly pointed out: 'The product should be disconnected at the **biaryl C-C bond**, not at the benzyl ether linkage.'",
+              "In Round 2: 'The verifier correctly points out that I should disconnect at the **biaryl C-C bond**, not at the benzyl ether. This is a Suzuki-Miyaura cross-coupling reaction.'"
+            ]
+          },
+          {
+            "rule": "Recognize functional group signatures that indicate specific reaction types: boronic esters (pinacol or neopentyl glycol derivatives) strongly suggest Suzuki coupling as the forward reaction, meaning the retrosynthetic disconnection should be at the C-C bond adjacent to the boron-bearing carbon.",
+            "examples": [
+              "Ground truth reactant 1: `CC1(C)OB(c2ccc(OCc3ccc4ccccc4n3)cc2)OC1(C)C` - This is a **pinacol boronic ester**",
+              "In Round 2: 'The boronic ester is typically a pinacol ester: B(OC(CH₃)₂C(CH₃)₂O)'"
+            ]
+          },
+          {
+            "rule": "Pay attention to protecting groups (like THP for phenols) as indicators of which functional groups need to remain unreactive during the key bond-forming step. This helps identify which reactant should bear which functional groups.",
+            "examples": [
+              "Product analysis: 'A tetrahydropyran-2-yl ether group (OC2CCCCO2) at one position' and 'The tetrahydropyran-2-yl (THP) ether is a common protecting group for phenols'",
+              "In Round 2: 'Aryl bromide: N#Cc1ccc(OC2CCCCO2)c(Br)c1 - This is the benzonitrile core with THP protection'"
+            ]
+          },
+          {
+            "rule": "Start with systematic functional group identification before attempting any retrosynthetic analysis. A complete inventory of structural features prevents overlooking important groups and helps identify the most strategic disconnection point.",
+            "examples": [
+              "Key features: A secondary alcohol group: C(O), An N-oxide pyridine ring (c[n+]([O-])cc), A tricyclic system with a spiro-cyclopentane ketal, Two chlorine substituents on the pyridine N-oxide, A methoxy group"
+            ]
+          },
+          {
+            "rule": "Provide mechanistic rationale for the proposed disconnection to validate the chemical logic, even when the exact reaction conditions are not specified.",
+            "examples": [
+              "Explained the mechanism: 'This is a standard amide coupling reaction where: - The hydrazine NH2 group attacks the activated carboxylic acid - Forms the hydrazide linkage -NHN-C(=O)-'",
+              "Noted the likely conditions: 'This suggests the reaction likely proceeds with a coupling reagent (EDC, DCC, HATU, etc.) that activates the carboxylic acid in situ'"
+            ]
+          },
+          {
+            "rule": "Verify SMILES formatting and canonical forms before submitting, ensuring proper dot-separation for multiple reactants and no extraneous characters.",
+            "examples": [
+              "The solver checked: 'Verification of SMILES: - Reactant 1: CC(C)(C)OC(=O)NN (Boc-hydrazine) - Reactant 2: O=C(O)c1ccc(Br)cc1Cl (4-bromo-2-chlorobenzoic acid)'",
+              "Final answer properly formatted: 'CC(C)(C)OC(=O)NN.O=C(O)c1ccc(Br)cc1Cl' with dot separator and no spaces"
+            ]
+          },
+          {
+            "rule": "Carefully distinguish between different types of oxygen-containing linkages (phosphate esters vs. ethers vs. phosphonate ethers). The nature of the linkage determines the entire retrosynthetic strategy.",
+            "examples": [
+              "Initial incorrect analysis: 'The product contains a diethyl phosphate ester connected to a hydroxymethyl-substituted purine derivative via the phosphate group.' This misidentified the linkage as a phosphate ester.",
+              "Corrected analysis: 'The connection is P-CH₂-O-CH₂-purine, which is an ether linkage between two CH₂ groups.' This correctly identified the ether linkage, leading to the right disconnection strategy."
+            ]
+          },
+          {
+            "rule": "When verifier feedback indicates a fundamental error in disconnection strategy, completely restart the structural analysis rather than trying to patch the original approach. Focus on the specific bond type mentioned in the feedback.",
+            "examples": [
+              "Verifier feedback: 'The product contains a -CH₂-O-CH₂- ether linkage between the phosphonate and purine, NOT a phosphate ester.'",
+              "Response: 'I need to reconsider the disconnection based on the verifier's feedback... Let me re-examine the structure... Breaking it down more carefully...' This shows a complete restart of the analysis with focus on the correct bond type."
+            ]
+          },
+          {
+            "rule": "For ether linkages (C-O-C), apply Williamson ether synthesis disconnection: one fragment gets a leaving group (typically Br or I), the other gets a hydroxyl group (OH) that serves as the nucleophile precursor.",
+            "examples": [
+              "Correct disconnection: 'Disconnect the C-O bond in the -CH₂-O-CH₂- bridge. One fragment needs a leaving group (Br on the purine side). The other fragment needs a nucleophilic oxygen (OH on the phosphonate side).'",
+              "Reactants identified: 'Diethyl hydroxymethylphosphonate: CCOP(=O)(CO)OCC' and 'Bromomethyl purine derivative: Nc1ncnc2c1nc(CBr)n2CCc1ccccc1'"
+            ]
+          },
+          {
+            "rule": "Always verify that the proposed reactants can logically combine to form the product through a known reaction mechanism. State the mechanism explicitly to check plausibility.",
+            "examples": [
+              "Mechanism verification: 'The hydroxymethyl phosphonate (deprotonated) attacks the bromomethyl carbon on the purine in an SN2 displacement, forming the ether linkage and releasing Br⁻.' This confirms the reactants are correctly assigned as nucleophile and electrophile."
+            ]
+          },
+          {
+            "rule": "When feedback indicates your answer is completely wrong, don't just try variations of the same approach - fundamentally reconsider the problem type and look for what you missed in the original structure.",
+            "examples": [
+              "After being told the initial approach was wrong, the solver stated: 'I need to reconsider this problem based on the verifier's feedback' and completely changed their analysis from ring formation to deprotection."
+            ]
+          },
+          {
+            "rule": "For peptide retrosynthesis, identify the sequence of amino acid residues first, then determine the most logical disconnection point (typically the most recently formed amide bond, often at the C-terminus).",
+            "examples": [
+              "The sequence appears to be: Cbz-Val-Pro-Gly-Val-Gly-OMe. The most likely single-step synthesis would be coupling two fragments via amide bond formation.",
+              "The most straightforward disconnection would be between the last two residues (Val-Gly), giving: Fragment 1: Cbz-Val-Pro-Gly-Val-OH (or activated form), Fragment 2: H-Gly-OMe (glycine methyl ester)"
+            ]
+          },
+          {
+            "rule": "When exact string matching is required, pay careful attention to SMILES canonicalization details including: (1) the starting atom in the SMILES string, (2) stereochemistry notation ([C@H] vs [C@@H]), and (3) the order of multiple reactants.",
+            "examples": [
+              "The key differences in the peptide fragment: Starts with CC(C)[C@H] (the valine isopropyl group and chiral center), Uses [C@H] stereochemistry notation (not [C@@H]) at the valine position",
+              "Order of reactants: I wrote COC(=O)CN.O=C(O)[C@@H]... but the ground truth has the peptide fragment first"
+            ]
+          },
+          {
+            "rule": "For peptide coupling reactions, represent the carboxylic acid fragment with a free -COOH group and the amine fragment with a free -NH2 (or -NH- in the case of secondary amines), as these are the reactive species in the coupling reaction.",
+            "examples": [
+              "Fragment 1 (Cbz-Val-Pro-Gly-Val-OH): O=C(O)[C@@H](NC(=O)CNC(=O)[C@@H]1CCCN1C(=O)[C@@H](NC(=O)OCc1ccccc1)C(C)C)C(C)C",
+              "Fragment 2 (H-Gly-OMe): COC(=O)CN"
+            ]
+          },
+          {
+            "rule": "Always analyze multiple disconnection strategies before committing to one, even if the first seems obvious. This ensures you haven't missed a simpler or more direct route.",
+            "examples": [
+              "The solver considered three possible disconnections: (1) Benzyl ether formation, (2) Bromination, (3) Phenol deprotection, before selecting the most plausible one."
+            ]
+          },
+          {
+            "rule": "For retrosynthetic analysis, prioritize well-known named reactions (Williamson ether synthesis, Suzuki coupling, etc.) as they are more likely to represent the intended single-step pathway.",
+            "examples": [
+              "The solver identified 'Williamson ether synthesis' as the reaction type, which is a classic and reliable method for forming aryl-alkyl ethers."
+            ]
+          },
+          {
+            "rule": "Pay careful attention to format requirements, especially ordering conventions in multi-component answers. When feedback indicates a format issue but confirms chemical correctness, adjust only the format.",
+            "examples": [
+              "After receiving feedback that 'the order doesn't match the canonical format,' the solver preserved the chemical reasoning entirely and only reordered the reactants from 'Oc1ccc(O)c(Br)c1.BrCc1ccccc1' to 'BrCc1ccccc1.Oc1ccc(O)c(Br)c1'."
+            ]
+          },
+          {
+            "rule": "When analyzing feedback, distinguish between chemical errors and formatting errors. Chemical errors require rethinking the approach; formatting errors require only presentation adjustments.",
+            "examples": [
+              "In Round 2, the solver correctly identified: 'The verifier confirmed that my chemical reasoning and reactant identification were correct. The only issue was the ordering of the reactants.'"
+            ]
+          },
+          {
+            "rule": "Generate multiple competing hypotheses for the retrosynthetic step before committing to one. Consider: protecting group removal, alkylation reactions, and cross-coupling reactions as the most common single-step transformations.",
+            "examples": [
+              "Round 1: 'Common approaches for indazole synthesis: 1. N-alkylation, 2. Arylation, 3. Cyclization' - The solver enumerated multiple possibilities.",
+              "Round 1: 'I should also consider if this could be a demethylation/deprotection of the phenol OH group' - Considering alternative hypotheses."
+            ]
+          },
+          {
+            "rule": "Always begin with systematic structural decomposition before attempting disconnection. Identify and label all major substructures and functional groups to avoid missing critical features.",
+            "examples": [
+              "Breaking this down: There's a 2-methylbenzoyl group (Cc1ccccc1C(=O)-) attached via an amide bond to a para-substituted benzene ring (1,4-disubstituted). The other substituent on the benzene is another amide C(=O)N2- connected to a tricyclic system."
+            ]
+          },
+          {
+            "rule": "Enumerate multiple disconnection options systematically before selecting one. This prevents premature commitment to a suboptimal strategy and ensures comprehensive coverage of possibilities.",
+            "examples": [
+              "**Option 1:** Disconnect the left amide bond - This would give: Cc1ccccc1C(=O)Cl (or acid) + H2Nc1ccc(C(=O)N2Cc3ccccc3Sc3ncccc32)cc1. **Option 2:** Disconnect the right amide bond - This would give: Cc1ccccc1C(=O)Nc1ccc(C(=O)OH or Cl)cc1 + HN1Cc2ccccc2Sc2ncccc21"
+            ]
+          },
+          {
+            "rule": "Maintain clear chemical nomenclature alongside SMILES notation. Naming compounds (e.g., '2-methylbenzoyl chloride') helps verify that the SMILES structure matches chemical intuition.",
+            "examples": [
+              "An acid chloride: Cc1ccccc1C(=O)Cl (2-methylbenzoyl chloride). The amine component would be 4-aminobenzamide derivative with the phenothiazine attached."
+            ]
+          },
+          {
+            "rule": "When predicting SNAr reactions, carefully count the number of leaving groups needed. Do not assume multiple leaving groups are required unless the product structure demands it.",
+            "examples": [
+              "Initial error: 'The aryl halide: 1,2-dibromo-4-(trifluoromethyl)benzene: FC(F)(F)c1ccc(Br)c(Br)c1' - incorrectly proposed dibrominated starting material.",
+              "Correction after feedback: 'The aryl halide should be monobrominated, not dibrominated. The correct aryl halide is Fc1ccc(C(F)(F)F)cc1Br'"
+            ]
+          },
+          {
+            "rule": "In SNAr mechanisms, identify which substituent was displaced by analyzing the product structure and considering activation patterns. The most activated position (ortho/para to electron-withdrawing groups) is where substitution occurs.",
+            "examples": [
+              "Corrected analysis: 'Given that F is ortho to CF3 (which is electron-withdrawing), and Br is para to CF3, the SNAr would occur at the position with the fluorine (more activated by the ortho CF3), with the Br remaining in the product.'",
+              "This explains why F was the leaving group rather than Br, even though both are present in the starting material."
+            ]
+          },
+          {
+            "rule": "For complex heterocyclic systems, correctly identify the nucleophilic site. In phenoxazine, the NH group is the nucleophile, not the oxygen.",
+            "examples": [
+              "Correct identification: 'The phenoxazine NH acts as a nucleophile and displaces either the F or Br from the aryl halide.'",
+              "This understanding was crucial for proposing the correct NH-containing phenoxazine reactant rather than an O-nucleophile."
+            ]
+          },
+          {
+            "rule": "Always verify that the proposed mechanism explains the observed substitution pattern in the product. Work backwards from product to reactants, ensuring regiochemistry is consistent.",
+            "examples": [
+              "Verification step: 'This makes sense: the F gets displaced by the phenoxazine nitrogen, leaving Br in the final product at the position shown.'",
+              "This backward verification confirmed that the proposed reactants would indeed yield the target product with the correct Br position."
+            ]
+          },
+          {
+            "rule": "When feedback indicates an incorrect reactant, focus on understanding the specific structural differences rather than just trying alternative leaving groups. The error may involve a fundamentally different starting material (e.g., a difluoro compound instead of a chlorofluoro compound).",
+            "examples": [
+              "The verifier pointed out: 'The correct reactant is 2,6-difluoropyridine (Fc1cccnc1F), not 3-chloro-2-fluoropyridine'. This indicated not just a different leaving group, but a different substitution pattern entirely.",
+              "In Round 2, the solver correctly revised: 'The key insights are: 1. Correct electrophile: 2,6-difluoropyridine (Fc1cccnc1F), not 3-chloro-2-fluoropyridine'"
+            ]
+          },
+          {
+            "rule": "In nucleophilic aromatic substitution (SNAr) reactions on pyridines, fluorine can serve as a leaving group when properly activated, especially when multiple electron-withdrawing groups are present. Don't assume only Cl, Br, or I are viable leaving groups.",
+            "examples": [
+              "The verifier noted: 'Fluorine ortho or para to nitrogen in pyridines can serve as leaving groups in SNAr reactions, especially when another electron-withdrawing group (like another fluorine) is present'",
+              "In Round 2: 'In 2,6-difluoropyridine, both fluorines are activated for SNAr (one ortho, one para to the electron-withdrawing nitrogen)'"
+            ]
+          },
+          {
+            "rule": "Consider regioselectivity carefully in aromatic substitution reactions. When multiple positions could potentially react, identify which is most activated based on electronic effects and sterics.",
+            "examples": [
+              "Round 2 analysis: 'The fluorine para to nitrogen (position 6) is typically more reactive in SNAr reactions'",
+              "The solver explained: 'The isopropylthiolate nucleophile selectively displaces the fluorine at position 6. The fluorine at position 2 remains intact, giving the observed product'"
+            ]
+          },
+          {
+            "rule": "When receiving corrective feedback, explicitly acknowledge the error, extract the key learning points, and systematically revise the analysis rather than making minor adjustments to the original approach.",
+            "examples": [
+              "Round 2 opening: 'Understanding the Verifier Feedback - The verifier correctly identified that my previous answer was wrong. The key insights are: [numbered list of corrections]'",
+              "The solver created a new section: 'Retrosynthetic Analysis (Corrected)' showing a complete reworking of the problem"
+            ]
+          },
+          {
+            "rule": "Always verify SMILES strings in canonical form and double-check that the answer format exactly matches requirements (SMILES-only, proper separators, no extra text in answer tags).",
+            "examples": [
+              "Round 1: 'Let me verify the SMILES: 3-chloro-2-fluoropyridine: Fc1ncccc1Cl, Isopropylthiol: CC(C)S'",
+              "Round 2: 'Canonical SMILES Verification: Isopropylthiol: CC(C)S ✓, 2,6-difluoropyridine: Fc1cccnc1F ✓'"
+            ]
+          },
+          {
+            "rule": "In retrosynthesis, the most obvious disconnection (based on functional group position) may not always lead to the correct reactants. Consider alternative synthetic routes, especially those involving selective transformations of symmetric or multiply-substituted starting materials.",
+            "examples": [
+              "Initial incorrect approach assumed a monosubstituted starting material (3-chloro-2-fluoropyridine)",
+              "Correct approach recognized: 'The actual reaction involves displacement of one fluorine from 2,6-difluoropyridine' - a selective transformation of a disubstituted starting material"
+            ]
+          },
+          {
+            "rule": "When analyzing complex molecules with multiple nitrogen-containing groups (e.g., piperazines attached to heterocycles), carefully distinguish between structural nitrogens (part of aromatic systems) and reactive nitrogens (nucleophilic sites). The disconnection should target bonds formed by nucleophilic substitution, not structural components.",
+            "examples": [
+              "Initial error: 'Breaking the C-N bond between the piperazine and the ester-containing alkyl chain' - this targeted the wrong nitrogen.",
+              "Correction: 'The bond to break is between the piperazine nitrogen and the tricyclic heterocycle' - correctly identified the nucleophilic substitution site."
+            ]
+          },
+          {
+            "rule": "In nucleophilic aromatic substitution (SNAr) retrosynthesis, the leaving group (typically Cl, Br, or F) must be present on the electrophilic aromatic component in the reactants, not on the nucleophile. Always verify that the proposed electrophile has an appropriate leaving group at the substitution site.",
+            "examples": [
+              "Corrected analysis: 'The tricyclic heterocycle should have a Cl leaving group at the position where the piperazine will attach: Cc1cc2n(c1)Cc1cc(Cl)ccc1N=C2Cl'",
+              "Recognition: 'The chlorine on the benzene ring (ccc(Cl)cc) is part of the aromatic system and remains in the product. The leaving group chlorine must be at the C2 position'"
+            ]
+          },
+          {
+            "rule": "When feedback indicates an incorrect disconnection, systematically reconsider all possible bond-breaking points rather than making minor adjustments to the original hypothesis. The correct disconnection may be at a completely different location in the molecule.",
+            "examples": [
+              "After feedback: 'I need to reconsider the retrosynthetic disconnection based on the verifier's feedback.'",
+              "Systematic re-analysis: 'The verifier correctly identified that I chose the wrong disconnection point. Let me re-analyze'"
+            ]
+          },
+          {
+            "rule": "Distinguish between substituents that are spectator groups (remain unchanged through the reaction) and functional groups that participate in or result from the key bond-forming step. This helps identify the correct disconnection point.",
+            "examples": [
+              "Correct identification: 'The chlorine on the benzene ring (ccc(Cl)cc) is part of the aromatic system and remains in the product.'",
+              "Versus: 'The leaving group chlorine must be at the C2 position (the carbon that connects to the piperazine nitrogen in the product)'"
+            ]
+          },
+          {
+            "rule": "For molecules with two-component coupling reactions, determine which component should bear the nucleophilic site and which should bear the electrophilic site (leaving group). This is often dictated by the stability and reactivity of the functional groups present.",
+            "examples": [
+              "Correct assignment: 'Reactant 1: The piperazine already bearing the ester side chain acts as the nucleophile: COC(=O)C(C)(C)CN1CCNCC1'",
+              "Correct assignment: 'Reactant 2: The tricyclic heterocycle with a chlorine leaving group at the position where substitution occurs'"
+            ]
+          },
+          {
+            "rule": "When a product contains a free secondary amine (NH) in a ring system, always consider that the reactant may have a protected version of that amine, with benzyl being the most common protecting group for nitrogen.",
+            "examples": [
+              "The verifier feedback stated: 'The ground truth shows the reactant is the same molecule but with a benzyl group (Cc2ccccc2) protecting the piperidine NH'",
+              "Round 2 analysis: 'The piperidine ring has a secondary NH (the NH in C1CCNCC1)... Ground Truth Reactant shows the piperidine nitrogen is protected with a benzyl group (Cc2ccccc2)'"
+            ]
+          },
+          {
+            "rule": "When initial predictions fail, perform a detailed structural comparison between your prediction and the ground truth to identify the conceptual error in your reaction type assumption.",
+            "examples": [
+              "Verifier feedback: 'You proposed an N-alkylation disconnection, but the actual transformation is a protecting group removal (debenzylation)'",
+              "Round 2: 'I need to reconsider this retrosynthesis based on the verifier's feedback... The key insight is that this is a deprotection reaction, specifically a debenzylation'"
+            ]
+          },
+          {
+            "rule": "When identifying reactants, explicitly verify that each proposed starting material has the necessary reactive functionality for the proposed mechanism (e.g., active methylene groups for condensations, electrophilic carbonyls).",
+            "examples": [
+              "Hydantoin provides the active methylene group at C5. An aldehyde (CHO group on the pyrazolopyrimidine) acts as the electrophile. Reaction type: Knoevenagel condensation between hydantoin and an aromatic aldehyde to form the exocyclic double bond."
+            ]
+          },
+          {
+            "rule": "After proposing reactants, reconstruct them mentally or explicitly to ensure they would combine to form exactly the observed product structure, including all substituents and stereochemistry.",
+            "examples": [
+              "Let me verify the canonical SMILES for these: Hydantoin: O=C1CNC(=O)N1; Aldehyde: O=Cc1cnn2c(NC3CC3)cc(NC3CCCC3)nc12"
+            ]
+          },
+          {
+            "rule": "Name the reaction type explicitly. This helps validate the chemical logic and ensures the proposed transformation is mechanistically reasonable.",
+            "examples": [
+              "Reaction type: Knoevenagel condensation between hydantoin and an aromatic aldehyde to form the exocyclic double bond."
+            ]
+          },
+          {
+            "rule": "Use systematic nomenclature and clear structural descriptions when discussing complex molecules. This reduces ambiguity and helps track which parts of the molecule correspond to which reactants.",
+            "examples": [
+              "The pyrazolopyrimidine has two cycloalkylamino substituents: cyclopropylamino (NC4CC4) and cyclopentylamino (NC4CCCC4)"
+            ]
+          },
+          {
+            "rule": "For benzyl amine synthesis, nucleophilic substitution of benzyl halides with ammonia is a standard and expected transformation that should be prioritized in retrosynthetic analysis.",
+            "examples": [
+              "The correct approach identified: 'Start with 3-nitrobenzyl bromide: BrCc1cccc([N+](=O)[O-])c1, React with ammonia: N'",
+              "This represents a classic SN2 substitution at a benzylic position, a fundamental organic chemistry transformation."
+            ]
+          },
+          {
+            "rule": "In retrosynthetic analysis, identify ALL functional groups that were synthetically installed, not just the most obvious one. Multi-functional products often require disconnecting multiple bonds to reach the true starting materials.",
+            "examples": [
+              "Initial error: 'The most straightforward disconnection is the acetate ester formation' - this only considered ONE of TWO installed groups.",
+              "Correction after feedback: 'The product has TWO functional groups that need disconnection: the acetate AND the mesylate' - recognizing both synthetic modifications."
+            ]
+          },
+          {
+            "rule": "For single-step retrosynthesis, identify which functional group was installed in the FINAL step of the synthesis, not which one appears most prominent. The temporal order of synthesis matters.",
+            "examples": [
+              "Corrected understanding: 'The ground truth reveals a two-step synthesis: 1. First, acetylate the diol, 2. Then, mesylate the remaining hydroxyl with mesyl chloride'",
+              "Final correct approach: 'This means the **last step** in the synthesis was mesylation of the free hydroxyl group' - focusing on the most recent transformation."
+            ]
+          },
+          {
+            "rule": "Always distinguish carefully between similar functional groups (alcohols vs amines, aldehydes vs primary amines) when analyzing product structures. A single atom difference can completely change the retrosynthetic logic.",
+            "examples": [
+              "Initial error: 'CCC(N)...' (amine) vs Correct: 'CCC(O)...' (alcohol)",
+              "Verifier feedback: 'Wrong functional group on the core: You predicted CCC(N)... (amine), but the ground truth shows CCC(O)... (alcohol).'"
+            ]
+          },
+          {
+            "rule": "When initial predictions are rejected, use the ground truth reactants as a learning signal to re-examine the product structure rather than just guessing different reactants.",
+            "examples": [
+              "After rejection, the solver stated: 'Re-analyzing the Product' and 'Verifier's Key Points: 1. The core structure has an alcohol CCC(O)..., not an amine'",
+              "The solver explicitly corrected: 'Reactant 1: CCC(O)c1nn2cccc2c(=O)n1Cc1ccccc1 (alcohol)' after understanding the feedback"
+            ]
+          },
+          {
+            "rule": "Match the proposed mechanism to the actual functional groups present. If you propose reductive amination, verify that you have an amine and an aldehyde. If the reactants don't match this pattern, reconsider the mechanism.",
+            "examples": [
+              "Initial wrong mechanism: 'reductive amination (amine + aldehyde → secondary amine)'",
+              "Corrected mechanism: 'nucleophilic substitution (alcohol → leaving group, then displacement by amine)' after recognizing the alcohol functional group"
+            ]
+          },
+          {
+            "rule": "When analyzing a chain with multiple heteroatoms (like NCCCN), count the carbons and identify the functional groups at each terminus separately to avoid confusion.",
+            "examples": [
+              "Correct analysis in Round 2: 'Connected to a propyl chain with Boc-protected amine: -NCCCNHC(=O)OC(C)(C)C'",
+              "Identified the diamine correctly: 'CC(C)(C)OC(=O)NCCCN (Boc-protected diamine) - The primary amine (terminal -NH2) acts as the nucleophile'"
+            ]
+          },
+          {
+            "rule": "After receiving corrective feedback, explicitly acknowledge each correction point and systematically address it in the revised analysis.",
+            "examples": [
+              "Round 2 opening: 'Verifier's Key Points: 1. The core structure has an alcohol... 2. The Boc-protected fragment is a diamine... 3. The mechanism is likely nucleophilic substitution'",
+              "Then systematically addressed each point in the 'Correct Disconnection' section"
+            ]
+          },
+          {
+            "rule": "When feedback indicates a fundamental error in reaction type (intramolecular vs. intermolecular), completely reassess the problem rather than making minor adjustments.",
+            "examples": [
+              "After receiving feedback that 'this is an intermolecular Diels-Alder reaction between two separate molecules, not an intramolecular cyclization,' the solver completely reconsidered the analysis instead of trying to modify the original single-molecule answer."
+            ]
+          },
+          {
+            "rule": "For Diels-Alder reactions, systematically identify both the diene (4π component) and dienophile (2π component) by analyzing which parts of the product correspond to each reactant.",
+            "examples": [
+              "The solver correctly identified: 'The ketone side chain CC(C)=O attached to a cyclohexene ring suggests it came from methyl vinyl ketone (C=CC(C)=O) acting as the dienophile' and 'The remaining complex structure with the oxygen bridge and exocyclic methylenes represents the diene component.'"
+            ]
+          },
+          {
+            "rule": "When a product contains a simple functional group or substructure that seems disconnected from the main complexity, consider it as a separate reactant rather than part of an intramolecular precursor.",
+            "examples": [
+              "The methyl vinyl ketone (C=CC(C)=O) is a simple, common dienophile that should have been recognized as a separate reactant rather than incorporated into a complex single-molecule precursor."
+            ]
+          },
+          {
+            "rule": "Pay careful attention to SMILES formatting requirements: multiple reactants must be separated by dots, and the answer should contain only SMILES notation without additional text.",
+            "examples": [
+              "The successful answer correctly formatted as: 'C=C1C(=C)C2OC1C(=C)C2=C.C=CC(C)=O' with the dot separator between the two reactants."
+            ]
+          },
+          {
+            "rule": "Use verifier feedback as a learning opportunity: extract specific information about the correct answer type (number of reactants, reaction mechanism) and incorporate it systematically into the revised approach.",
+            "examples": [
+              "The verifier stated: 'The actual synthesis involves an intermolecular Diels-Alder reaction between two separate molecules: 1. A furan-based diene... 2. Methyl vinyl ketone as the dienophile.' The solver then explicitly used this framework: 'Ground Truth Information: The reaction involves: 1. A furan-based diene... 2. Methyl vinyl ketone...'"
+            ]
+          },
+          {
+            "rule": "For cycloaddition products, trace back the newly formed bonds by identifying the cyclohexene ring pattern and determining which atoms came from the diene vs. dienophile.",
+            "examples": [
+              "The solver performed: 'Breaking the Diels-Alder cycloadduct: Remove the two new σ bonds formed in the [4+2] cycloaddition. This regenerates the diene (the furan derivative with exocyclic methylenes) and the dienophile (methyl vinyl ketone).'"
+            ]
+          },
+          {
+            "rule": "When identifying olefination reactions, distinguish carefully between Wittig reactions (using phosphonium ylides R₃P=CHR') and Horner-Wadsworth-Emmons reactions (using phosphonate esters (RO)₂P(O)CHR'). The choice depends on the specific reagent structure required, not just the product type.",
+            "examples": [
+              "Initial attempt: 'The HWE reaction is a common method for forming α,β-unsaturated esters' - predicted triethyl phosphonoacetate",
+              "After feedback: 'The verifier indicates the ground truth uses a Wittig reaction (not HWE)' - corrected to triphenylphosphonium ylide"
+            ]
+          },
+          {
+            "rule": "Always perform detailed structural analysis of the product before proposing reactants. Identify all functional groups, substitution patterns, and stereochemical features that constrain the possible synthetic routes.",
+            "examples": [
+              "The product is **CCOC(=O)C=CCc1ccc(Br)cc1**, which is an α,β-unsaturated ester with a 4-bromobenzyl substituent at the γ-position.",
+              "The ester group: **CCOC(=O)-**, The α,β-unsaturated system: **-C=C-**, The substituent: **-Cc1ccc(Br)cc1**"
+            ]
+          },
+          {
+            "rule": "Understand the structural representation of reagents in SMILES format, particularly for organophosphorus compounds where connectivity and bonding patterns are crucial.",
+            "examples": [
+              "Ground truth SMILES: CCOC(=O)C=P(c1ccccc1)(c1ccccc1)c1ccccc1 represents a stabilized Wittig ylide where the ylide carbon bears an ester group and the phosphorus is bonded to three phenyl groups",
+              "Structure: (Ph)₃P=CHCO₂Et - correctly interpreted the SMILES as triphenylphosphonium ylide"
+            ]
+          },
+          {
+            "rule": "For retrosynthetic problems, always identify the most likely disconnection point based on the product's structural features, then work backwards to determine the exact reagents needed.",
+            "examples": [
+              "Disconnect the C=C bond to give: A phosphonate ester reagent or a Wittig ylide, and An aldehyde: O=CHCc1ccc(Br)cc1",
+              "The Wittig reaction between: Triphenylphosphonium ylide with ester and 4-Bromophenylacetaldehyde gives the α,β-unsaturated ester product"
+            ]
+          },
+          {
+            "rule": "When initial hypothesis fails, carefully analyze feedback to identify which functional groups changed vs. remained constant. Don't assume the most obvious modification is correct without verification.",
+            "examples": [
+              "Initial assumption: 'bromination seems most likely as the final step' was incorrect. After feedback: 'The verifier correctly identified that the transformation is N-methylation, not bromination' and 'The bromine remains unchanged in the reactant.'"
+            ]
+          },
+          {
+            "rule": "For N-methylation reactions, always include formaldehyde (C=O) as a reactant. This is a classic Eschweiler-Clarke reaction or reductive amination pattern.",
+            "examples": [
+              "The ground truth includes formaldehyde (C=O) as a reactant, which the model completely missed in Round 1.",
+              "Final correct answer: 'C=O.Clc1ccc2c(c1)CNCc1nnc(Br)n1-2' includes both the NH precursor and formaldehyde."
+            ]
+          },
+          {
+            "rule": "Distinguish between tertiary amines (N-R₃) and secondary amines (N-R₂H) carefully. N-methylation converts secondary to tertiary amines, which is a common late-stage modification.",
+            "examples": [
+              "The product has a tertiary amine (N-CH₃). The reactant should have a secondary amine (N-H).",
+              "Has a tertiary amine with N-CH₃ group... The precursor with NH instead of N-CH₃"
+            ]
+          },
+          {
+            "rule": "When receiving corrective feedback, explicitly acknowledge the error and systematically work through the correct approach rather than making minor adjustments to the wrong strategy.",
+            "examples": [
+              "I need to reconsider the retrosynthetic analysis based on the verifier's feedback. The verifier correctly identified that the transformation is N-methylation, not bromination."
+            ]
+          },
+          {
+            "rule": "When disconnecting a bond between two fragments, always consider the directionality: which fragment should be the electrophile (with leaving group) and which should be the nucleophile. The two directions are NOT equivalent.",
+            "examples": [
+              "The verifier feedback identified: 'You identified the correct bond to disconnect (the thioether C-S bond) but chose the wrong direction for the disconnection.'",
+              "In Round 2, the solver corrected this: 'Two possible disconnections: 1. My previous attempt: Ar-CH2-SH + Br-CH2CF3 → Ar-CH2-S-CH2CF3 2. Ground truth: Ar-CH2-Br + HS-CH2CF3 → Ar-CH2-S-CH2CF3'"
+            ]
+          },
+          {
+            "rule": "Prioritize standard, well-established synthetic transformations when choosing disconnection directionality. Benzyl halides reacting with nucleophiles is more common than benzyl nucleophiles reacting with alkyl halides.",
+            "examples": [
+              "The solver recognized in Round 2: 'Benzyl bromides (Ar-CH2-Br) are excellent electrophiles for SN2 reactions' and 'The reaction: benzyl bromide + thiolate → thioether is a very common and reliable transformation'",
+              "This led to the correct choice: 'The ground truth approach uses: 1. Reactant 1: The aromatic compound with a benzyl bromide... 2. Reactant 2: Trifluoroethanethiol'"
+            ]
+          },
+          {
+            "rule": "When receiving feedback about an error, carefully analyze whether the error is in bond selection or in disconnection directionality. These are distinct types of mistakes requiring different corrections.",
+            "examples": [
+              "After feedback, the solver correctly identified: 'The verifier correctly identified that I chose the wrong direction for the thioether disconnection. Let me reconsider:'",
+              "The solver then systematically compared both directions and chose the chemically more reasonable one"
+            ]
+          },
+          {
+            "rule": "For thioether formations (C-S bonds), the standard approach is nucleophilic substitution where a thiol/thiolate attacks an alkyl or benzyl halide, not the reverse.",
+            "examples": [
+              "The correct reasoning in Round 2: 'Looking at reactivity: - Benzyl bromides (Ar-CH2-Br) are excellent electrophiles for SN2 reactions - Thiols (R-SH) are good nucleophiles'",
+              "This led to the correct reactants: benzyl bromide derivative + trifluoroethanethiol"
+            ]
+          },
+          {
+            "rule": "Always verify that the output format exactly matches requirements (canonical SMILES only, proper separators, no extra whitespace or text).",
+            "examples": [
+              "The final answer was formatted correctly: '<answer>CCOC(=O)Cc1ccc(OC)c(Oc2ccc([N+](=O)[O-])cc2CBr)c1.FC(F)(F)CS</answer>'",
+              "This resulted in: 'EXACT STRING MATCH' with the ground truth"
+            ]
+          },
+          {
+            "rule": "When multiple disconnection points exist, prioritize based on typical synthetic sequence: protecting groups are usually installed early, and reactive electrophiles (like sulfonyl chlorides, acid chlorides) are typically added in later steps.",
+            "examples": [
+              "The verifier correctly identified that sulfonamide formation (using sulfonyl chloride) would be the final step rather than Boc protection, because 'the Boc group would need to be protected before introducing the reactive sulfonyl chloride.'",
+              "In Round 2, the model corrected its approach: 'This is a classic sulfonamide formation reaction, which is indeed more likely to be the final step than Boc protection, especially since the Boc group would need to be protected before introducing the reactive sulfonyl chloride.'"
+            ]
+          },
+          {
+            "rule": "Systematically identify all functional groups and linkages in the product before proposing a disconnection. Missing a key functional group can lead to incorrect retrosynthetic analysis.",
+            "examples": [
+              "In Round 2, the model performed a more careful structural analysis: 'Breaking it down: Boc-protected aminomethyl group: Boc-NH-CH2-, Piperidine ring with the aminomethyl attached at position 4, The piperidine nitrogen (N in the ring) is sulfonylated'",
+              "The model identified the critical distinction: 'This is Boc-protected 4-(aminomethyl)piperidine with a FREE NH on the piperidine ring' - recognizing that one nitrogen is protected while another is available for reaction."
+            ]
+          },
+          {
+            "rule": "Consider the reactivity and compatibility of functional groups when determining synthetic order. Highly reactive groups (sulfonyl chlorides, acid chlorides) typically react with the most nucleophilic sites available.",
+            "examples": [
+              "The model recognized the reaction mechanism: 'Sulfonyl chloride + Secondary amine → Sulfonamide + HCl. This is a classic sulfonamide formation reaction'",
+              "The analysis noted: 'The free secondary amine (piperidine NH) reacts with the sulfonyl chloride. This forms the N-S bond creating the sulfonamide.'"
+            ]
+          },
+          {
+            "rule": "In retrosynthetic analysis, work backwards from the product by identifying which bond was most likely formed last, considering both chemical feasibility and protecting group strategy.",
+            "examples": [
+              "The successful approach identified: 'The last step was sulfonamide formation where: The free secondary amine (piperidine NH) reacts with the sulfonyl chloride'",
+              "The model correctly reasoned about synthesis order: 'Boc protection would precede sulfonylation to avoid side reactions'"
+            ]
+          },
+          {
+            "rule": "When verification fails, distinguish between conceptual errors (wrong mechanism/disconnection) and implementation errors (wrong leaving group choice, stereochemistry notation). If the mechanism is correct, focus corrections on the specific details flagged.",
+            "examples": [
+              "Round 1 feedback identified: 'Your retrosynthetic approach (SNAr mechanism) is correct, but: 1. The leaving group should be chlorine (Cl), not fluorine (F) 2. The stereochemistry must be represented as N[C@H]...'",
+              "Round 2 response: 'The reaction is still a nucleophilic aromatic substitution (SNAr)... I must match the exact reactant used... Corrected Reactants: 1. Aromatic component with Cl instead of F, 2. Amine with @ instead of @@'"
+            ]
+          },
+          {
+            "rule": "In retrosynthetic analysis, systematically identify activating groups and their positions relative to potential leaving groups. Electron-withdrawing groups (like nitro) ortho/para to a leaving group strongly suggest SNAr as the forward reaction mechanism.",
+            "examples": [
+              "Round 1: 'The nitro group is electron-withdrawing and ortho to the amine, which would activate the position for SNAr if there was a leaving group.'",
+              "Round 2: 'The nitro group activates the aromatic ring... Chlorine serves as the leaving group at the para position'"
+            ]
+          },
+          {
+            "rule": "Pay careful attention to stereochemical notation in SMILES strings. Single @ and double @@ represent opposite configurations, and exact matching is critical for correctness.",
+            "examples": [
+              "Round 1 error: 'N[C@@H]1CC[C@@H](O)CC1' vs ground truth 'N[C@H]1CC[C@H](O)CC1'",
+              "Round 2 correction: 'I used @@ descriptors when I should have used single @ descriptors. This is a critical difference in SMILES notation: @ and @@ represent opposite stereochemical configurations'"
+            ]
+          },
+          {
+            "rule": "When multiple leaving groups are theoretically viable for a reaction mechanism (e.g., F, Cl, Br for SNAr), don't assume the 'most common' choice—be prepared to adjust based on feedback or dataset conventions.",
+            "examples": [
+              "Round 1: 'The most common leaving group for SNAr with a nitro activating group would be fluorine or chlorine. Given typical dataset conventions, fluorine is often used'",
+              "Round 2 correction: 'I incorrectly predicted fluorine (F) when the correct leaving group is chlorine (Cl). While both F and Cl can serve as leaving groups in SNAr reactions, I must match the exact reactant used.'"
+            ]
+          },
+          {
+            "rule": "Always verify that stereochemistry is preserved through the proposed reaction mechanism. For SNAr reactions, chiral centers not directly involved in the reaction should maintain their configuration.",
+            "examples": [
+              "Round 1: 'Let me verify the stereochemistry is preserved - yes, both chiral centers in the cyclohexanol maintain their configuration through the substitution.'"
+            ]
+          },
+          {
+            "rule": "Structure your retrosynthetic analysis by first identifying the key bond to disconnect, then determining what reactants would form that bond under reasonable reaction conditions.",
+            "examples": [
+              "Round 1: 'Plausible Disconnection: The most likely single-step retrosynthesis would be a nucleophilic aromatic substitution (SNAr) where: The amine nitrogen attacks an aromatic position bearing a leaving group'",
+              "Round 1: 'The product would come from: 1. A halogenated aromatic compound... 2. An amine nucleophile: H2N[C@@H]2CC[C@@H](O)CC2'"
+            ]
+          },
+          {
+            "rule": "When initial retrosynthetic analysis fails, systematically re-examine ALL possible disconnection points rather than variations of the same disconnection.",
+            "examples": [
+              "Round 1 proposed disconnecting the benzoyl amide bond. After feedback indicated this was wrong, Round 2 completely shifted strategy to examine the cyclohexane-piperazine connection instead of trying variations of amide coupling."
+            ]
+          },
+          {
+            "rule": "Pay close attention to the oxidation state and functional groups in ground truth reactants—they reveal the reaction mechanism (e.g., ketone suggests reductive amination, not simple coupling).",
+            "examples": [
+              "The verifier revealed that one reactant was 'CC(=O)N1CCC(=O)CC1' (N-acetyl-4-piperidinone with a ketone), which immediately indicated reductive amination rather than amide coupling."
+            ]
+          },
+          {
+            "rule": "In retrosynthesis, consider that complex ring systems (like piperazines) may be formed in the final step rather than being pre-assembled.",
+            "examples": [
+              "Round 1 incorrectly assumed the piperazine ring was already formed in a reactant. Round 2 correctly recognized that the piperazine-like structure could arise from reductive amination between a piperidinone and an amine."
+            ]
+          },
+          {
+            "rule": "When feedback indicates a specific bond disconnection, trace back what functional groups must exist in the reactants to enable that transformation.",
+            "examples": [
+              "After learning the disconnection was between cyclohexane and piperazine via reductive amination, the solver correctly deduced: 'A ketone on the piperazine ring (piperidinone) reacts with a free amine on the cyclohexane.'"
+            ]
+          },
+          {
+            "rule": "Always verify SMILES formatting matches expected conventions (dot-separated reactants, no extra text, proper stereochemistry notation).",
+            "examples": [
+              "Both rounds correctly formatted the answer as dot-separated SMILES: 'CC(=O)N1CCC(=O)CC1.COc1cc(C(F)(F)F)cc(C(F)(F)F)c1C(=O)N[C@@H]1CCCC[C@@H]1N'"
+            ]
+          },
+          {
+            "rule": "When identifying disconnection points, prioritize well-established, high-yielding reactions with simple reagents (e.g., sulfonamide formation from amine + sulfonyl chloride).",
+            "examples": [
+              "The most obvious disconnection point is the sulfonamide bond. Sulfonamides are typically formed by: Reaction of a sulfonyl chloride with an amine",
+              "This is a classic sulfonamide formation reaction, which is a very common transformation."
+            ]
+          },
+          {
+            "rule": "Always verify the chemical accuracy of SMILES representations, especially for functional groups with multiple heteroatoms (sulfonyl, phosphoryl, nitro groups). Ensure correct oxidation states and bond orders.",
+            "examples": [
+              "Benzenesulfonyl chloride has the structure C6H5-SO2Cl, where sulfur is bonded to: Two oxygen atoms (double bonds), One chlorine atom, One phenyl group",
+              "The correct SMILES must explicitly show both oxygen atoms as S(=O)(=O)"
+            ]
+          },
+          {
+            "rule": "Systematically analyze complex molecules by breaking them into recognizable substructures (core scaffold, side chains, functional groups) before attempting disconnection.",
+            "examples": [
+              "This molecule contains: A tricyclic core (appears to be an acridine-like or quinazoline-like system with an amino group), A pentyl chain at one position, A side chain with a sulfonamide group"
+            ]
+          },
+          {
+            "rule": "For functional groups with specific stoichiometry (like SO2), explicitly count and represent all atoms in the SMILES string to avoid representing a different functional group.",
+            "examples": [
+              "A sulfonyl chloride has the structure R-SO₂Cl, which requires TWO oxygen atoms double-bonded to sulfur. The predicted SMILES O=S(Cl)c1ccccc1 represents a sulfinyl chloride (R-SOCl) with only ONE oxygen, which is chemically incorrect"
+            ]
+          },
+          {
+            "rule": "For complex molecules, prioritize simple functional group transformations (like amide bond formation) over multi-step processes or complex ring formations as the most likely final synthetic step.",
+            "examples": [
+              "The solver identified: 'The most straightforward disconnection appears to be the **amide bond formation**' rather than attempting to disconnect the complex heterocyclic core or C-C bonds.",
+              "The analysis correctly noted: 'Common disconnections for such complex molecules include: 1. Amide bond formation, 2. N-alkylation, 3. C-C coupling' and then selected the most accessible option."
+            ]
+          },
+          {
+            "rule": "Systematically decompose complex molecules into recognizable structural motifs before attempting retrosynthetic analysis.",
+            "examples": [
+              "The solver broke down the structure as: 'A xanthine/purine-like core (with two carbonyl groups and methylation), An isobutyl group, A substituted pyrrole group with a carboxamide side chain, A chloroindole methylamine substituent.'",
+              "This systematic breakdown made it easier to identify which parts were likely added in the final step versus earlier in the synthesis."
+            ]
+          },
+          {
+            "rule": "When disconnecting amide bonds, clearly identify both fragments: the carboxylic acid (or activated derivative) and the amine component.",
+            "examples": [
+              "The solver explicitly stated: 'The amide bond at C(=O)NCCNC(C)C can be disconnected to give: 1. A carboxylic acid precursor... 2. The amine: CC(C)NCCN'",
+              "Both reactants were clearly defined with their SMILES representations before combining them."
+            ]
+          },
+          {
+            "rule": "Pay attention to formatting requirements and canonical ordering conventions, even when the chemistry is correct.",
+            "examples": [
+              "After receiving feedback about reactant ordering, the solver immediately recognized: 'The only issue was the **order** of reactants in the dot-separated SMILES string.'",
+              "The correction was made systematically: 'The ground truth has the reactants in the order: 1. Carboxylic acid (the larger, more complex molecule) 2. Amine (the smaller molecule)'"
+            ]
+          },
+          {
+            "rule": "When receiving feedback indicating chemical correctness but formatting issues, maintain confidence in the chemical analysis and focus only on the technical correction needed.",
+            "examples": [
+              "The solver acknowledged: 'The verifier confirmed that my retrosynthetic analysis was chemically correct' and then focused solely on fixing the ordering issue.",
+              "Rather than second-guessing the entire approach, the solver stated: 'I need to simply reverse the order from my previous attempt.'"
+            ]
+          },
+          {
+            "rule": "Verify SMILES construction by mentally reconstructing the forward reaction to ensure the disconnection makes chemical sense.",
+            "examples": [
+              "The solver verified: 'This represents the standard amide coupling reaction where a carboxylic acid reacts with an amine to form the amide bond present in the product.'",
+              "The analysis included checking that removing the amine portion and replacing with -COOH would give the correct carboxylic acid precursor."
+            ]
+          },
+          {
+            "rule": "When chemical reasoning is validated as correct but the answer is rejected, focus exclusively on format/canonicalization issues rather than reconsidering the entire approach.",
+            "examples": [
+              "Round 2: 'The verifier pointed out that while both reactants are chemically correct, the SMILES representation of 5,5-diphenylhydantoin must match the exact canonical form.' The solver correctly maintained the same chemical approach and only adjusted the SMILES format."
+            ]
+          },
+          {
+            "rule": "Pay meticulous attention to SMILES atom ordering, especially for ring closures and branching points, as different orderings can represent the same molecule but fail exact string matching.",
+            "examples": [
+              "Round 2: 'The difference is in the placement of the ring closure N1 relative to the phenyl groups. In the canonical form, the ring closure comes AFTER both phenyl groups: C(c2ccccc2)(c2ccccc2)N1, not before them.' - This precise attention to ordering resolved the mismatch."
+            ]
+          },
+          {
+            "rule": "Always identify and analyze protecting groups first before considering other disconnections. Protecting groups (Boc, Cbz, TBS, etc.) have characteristic structural patterns and their installation is often the final step in a synthesis.",
+            "examples": [
+              "The verifier correctly identified that this is a **Boc protection reaction**, not an ester formation.",
+              "The model should have recognized that the N-Boc group (N(C)C(=O)OC(C)(C)C) in the product comes from protecting a secondary amine (CN-H)"
+            ]
+          },
+          {
+            "rule": "When removing a protecting group in retrosynthesis, remember to include BOTH the protecting reagent and the deprotected substrate as separate reactants.",
+            "examples": [
+              "**Reactants needed:** 1. **Boc₂O (di-tert-butyl dicarbonate)**: CC(C)(C)OC(=O)OC(=O)OC(C)(C)C 2. **The secondary amine substrate**",
+              "Two reactants separated by a dot: 1. Boc₂O: CC(C)(C)OC(=O)OC(=O)OC(C)(C)C 2. Secondary amine: CN[C@H]1CC[C@@H]..."
+            ]
+          },
+          {
+            "rule": "When performing retrosynthetic analysis, keep all unchanged functional groups intact. Only modify the specific functional group involved in the disconnection.",
+            "examples": [
+              "Keep the methyl ester intact in the amine substrate",
+              "The methyl ester (COC(=O)-) is already present... The methyl ester remains unchanged in this transformation",
+              "Replace N(C)C(=O)OC(C)(C)C with NH(C) or written as CN - Keep the methyl ester intact - Keep both stereocenters"
+            ]
+          },
+          {
+            "rule": "Learn from incorrect attempts by carefully analyzing verifier feedback. When an approach fails, completely reassess the functional group priorities rather than making minor adjustments.",
+            "examples": [
+              "I need to reconsider the transformation based on the verifier's feedback.",
+              "**Corrected Analysis:** The verifier correctly identified that this is a **Boc protection reaction**, not an ester formation."
+            ]
+          },
+          {
+            "rule": "Recognize common protecting group patterns: N-Boc appears as N(R)C(=O)OC(C)(C)C, where R can be H, alkyl, or aryl. The corresponding reagent is Boc₂O with structure (t-BuO)CO-O-CO(Ot-Bu).",
+            "examples": [
+              "Contains: N-Boc protected N-methylamine group: N(C)C(=O)OC(C)(C)C",
+              "**Boc₂O (di-tert-butyl dicarbonate)**: CC(C)(C)OC(=O)OC(=O)OC(C)(C)C"
+            ]
+          },
+          {
+            "rule": "Preserve stereochemistry throughout retrosynthetic analysis. Protection/deprotection reactions typically do not affect existing stereocenters.",
+            "examples": [
+              "Keep both stereocenters",
+              "Both stereochemistry centers are preserved"
+            ]
+          },
+          {
+            "rule": "Identify characteristic leaving groups or reactive functional groups as retrosynthetic disconnection points. Common leaving groups (tosylates, mesylates, halides) and protecting groups (MOM, TBS, Boc) are strong indicators of the most recent synthetic step.",
+            "examples": [
+              "The tosylate group is a common leaving group used in substitution reactions. The most straightforward disconnection would be: **Disconnection approach**: The tosylate group suggests this product was formed by tosylation of the corresponding alcohol.",
+              "Key structural features: ... 3. A long alkyl chain (8 carbons) ending in a tosylate group (-OS(=O)(=O)c2ccc(C)cc2)"
+            ]
+          },
+          {
+            "rule": "When transcribing SMILES strings with modifications, explicitly count repeating units (like carbon chains) to avoid off-by-one errors. Write out the counting process step-by-step.",
+            "examples": [
+              "Let me carefully count the alkyl chain between C2 and the tosylate: - Starting from C2: C2CCCCCCCCOS(=O)(=O)... - Breaking it down: C-C-C-C-C-C-C-C-O-S(=O)(=O)... - That's: 1-2-3-4-5-6-7-8 carbons, then the oxygen of the tosylate",
+              "Let me verify the alcohol chain count: C2CCCCCCCCO - C (from C2) - C-C-C-C-C-C-C-C (8 more carbons) - O (hydroxyl)"
+            ]
+          },
+          {
+            "rule": "For simple functional group interconversions, identify the standard reagent pair. Common transformations include: alcohol + tosyl chloride → tosylate; alcohol + acid chloride → ester; alcohol + protecting group reagent → protected alcohol.",
+            "examples": [
+              "The reaction would be: - Alcohol + Tosyl chloride (TsCl) → Tosylate ester",
+              "**Reaction**: R-OH + TsCl → R-OTs"
+            ]
+          },
+          {
+            "rule": "When receiving feedback about structural mismatches, perform a systematic character-by-character or segment-by-segment comparison between your answer and the expected structure, focusing on the area identified in the feedback.",
+            "examples": [
+              "Starting after C2: 1. C 2. C 3. C 4. C 5. C 6. C 7. C 8. C Then O (of the tosylate) So the alcohol should be: C2CCCCCCCCO (8 C's after C2, then OH)"
+            ]
+          },
+          {
+            "rule": "Preserve all other structural features of the molecule unchanged when making a single functional group transformation. Only modify the specific atoms involved in the disconnection.",
+            "examples": [
+              "**Alcohol precursor**: Replace the tosylate with OH, keeping the same 8-carbon chain - COCOc1ccc(C2(C)COc3cc(OCOC)ccc3C2CCCCCCCCO)cc1",
+              "The alcohol precursor: COCOc1ccc(C2(C)COc3cc(OCOC)ccc3C2CCCCCCCCCO)cc1 [preserves the chroman core and OMOM protecting groups]"
+            ]
+          },
+          {
+            "rule": "After identifying an error from feedback, explicitly acknowledge the mistake and show the correction process transparently, including recounting or re-examining the problematic section.",
+            "examples": [
+              "I need to carefully recount the carbon chain length in the product and ensure the alcohol precursor has the correct number of carbons.",
+              "Wait, I need to recount more carefully. In the product: C2CCCCCCCCOS(=O)(=O)..."
+            ]
+          },
+          {
+            "rule": "When initial disconnection fails, don't just try a different bond - analyze which structural features were already present in the starting material vs. which were actually formed in the reaction step.",
+            "examples": [
+              "The verifier feedback stated: 'The sulfonamide linkage was already present in the starting material, not formed in this step.' This redirected focus from sulfonamide formation to the actual transformation.",
+              "Round 2 analysis: 'The sulfonamide bond (`-NH-SO2-`) was **already present** in the starting material - it was NOT formed in this step'"
+            ]
+          },
+          {
+            "rule": "Focus on functional group interconversions rather than just bond formations - many retrosynthesis problems involve transforming one functional group to another while keeping the rest of the molecule intact.",
+            "examples": [
+              "The correct transformation was identified as: 'Carboxylic acid → N,N-Dimethylamide'",
+              "The key insight: 'The `C(=O)N(C)C` group (N,N-dimethylamide) should be traced back to: `C(=O)O` (carboxylic acid) + methylamine'"
+            ]
+          },
+          {
+            "rule": "Identify small molecule reagents (like amines, acids, bases) that participate in functional group transformations - these are often separate reactants in the SMILES notation.",
+            "examples": [
+              "Recognition of methylamine as a separate reactant: 'Missing Reactant: The ground truth includes `CNC` (methylamine) as a separate reactant'",
+              "Final answer correctly includes: 'CNC' (methylamine/dimethylamine) as the first reactant"
+            ]
+          },
+          {
+            "rule": "Use systematic comparison between product and proposed precursor to ensure only the intended functional group has changed.",
+            "examples": [
+              "Verification step: 'This has the sulfonamide already in place - The carboxylic acid group `-C(=O)O` that will be converted to `-C(=O)N(C)C`'",
+              "Ensuring structural integrity: 'Keep the sulfonamide intact in the starting material'"
+            ]
+          },
+          {
+            "rule": "When multiple retrosynthetic disconnections are chemically valid, prioritize the route that uses more stable and commercially available reagents over less stable alternatives.",
+            "examples": [
+              "The ground truth uses 4-iodoimidazole + arylboronic acid rather than aryl bromide + imidazole boronic acid because 'Arylboronic acids are more stable and commercially available than heteroarylboronic acids' and 'Imidazole boronic acids can be less stable and harder to handle'."
+            ]
+          },
+          {
+            "rule": "In cross-coupling reactions, heteroaryl halides (especially iodides) are often preferred as electrophilic partners when coupled with arylboronic acids.",
+            "examples": [
+              "The correct disconnection uses '4-iodoimidazole (heteroaryl halide)' as the electrophile rather than using the heteroaryl as the boronic acid component, because 'Heteroaryl halides (especially iodides) are excellent electrophilic partners in Suzuki coupling'."
+            ]
+          },
+          {
+            "rule": "When receiving feedback that your answer is incorrect but the general reaction type is correct, focus on whether you've reversed the coupling partners or made a similar systematic error rather than questioning the entire approach.",
+            "examples": [
+              "After the first attempt, the verifier noted 'The retrosynthetic logic is sound (Suzuki-Miyaura coupling), but you've chosen the wrong coupling partners.' This allowed the solver to keep the same reaction framework but swap which fragment carried the halide vs. the boronic acid."
+            ]
+          },
+          {
+            "rule": "Always verify that your final SMILES string exactly matches the required format, including the order of reactants and specific notation for functional groups.",
+            "examples": [
+              "In Round 2, the solver carefully noted 'The order in the ground truth is: Ic1c[nH]cn1.OB(O)c1cc(C(F)(F)F)cc(C(F)(F)F)c1' and then reproduced this exact format in the answer tags."
+            ]
+          },
+          {
+            "rule": "When initial analysis fails, focus on identifying which structural features are ALREADY PRESENT in starting materials versus which are FORMED in the final step. The disconnection point is where new bonds/groups are formed, not where complex pre-existing structures exist.",
+            "examples": [
+              "The verifier feedback revealed: 'The ground truth shows the amide is already present in one reactant. The actual last step is a nucleophilic aromatic substitution (SNAr).' This shifted focus from amide formation to SNAr reaction.",
+              "In Round 2: 'The morpholine substituent N2CCOC[C@@H]2CO is attached to the pyridine at the 2-position' - recognizing this as the NEW bond formed, not a pre-existing structure."
+            ]
+          },
+          {
+            "rule": "Look for potential leaving groups (Cl, Br, I, OTs, etc.) at positions where complex substituents appear in the product. These are strong indicators of nucleophilic substitution as the final step.",
+            "examples": [
+              "Round 2 analysis: 'Replace the morpholine group with a chlorine atom' - recognizing that Cl is a common leaving group in SNAr reactions on electron-deficient aromatic rings.",
+              "The correct reactant: 'CCSc1nc(Cl)cc(C)c1C(=O)NCc1cccc(F)c1' - chlorine at the position where morpholine is attached in the product."
+            ]
+          },
+          {
+            "rule": "Consider synthetic accessibility and logic. If a proposed intermediate contains multiple complex groups, question whether that intermediate is realistic. Simpler building blocks combined in the final step are often more synthetically logical.",
+            "examples": [
+              "Verifier feedback: 'The model's proposed carboxylic acid intermediate would be extremely difficult to synthesize as it already contains the complex morpholine substituent. The ground truth approach is more synthetically logical.'",
+              "The correct approach uses simpler building blocks: a chloro-pyridine with amide already formed + a morpholine alcohol, rather than trying to form an amide on a complex intermediate."
+            ]
+          },
+          {
+            "rule": "For heteroaromatic systems (pyridines, pyrimidines, etc.), consider nucleophilic aromatic substitution (SNAr) as a likely final step, especially when electron-withdrawing groups are present and a heteroatom substituent appears in the product.",
+            "examples": [
+              "Round 2: 'This is a classic SNAr reaction where the electron-deficient pyridine (activated by the nitrogen and other electron-withdrawing groups) undergoes nucleophilic substitution.'",
+              "The pyridine ring has multiple electron-withdrawing groups (nitrogen in ring, thioether, amide) making it susceptible to SNAr."
+            ]
+          },
+          {
+            "rule": "When correcting an error, explicitly state what was wrong with the previous approach and why the new approach is correct. This demonstrates understanding and helps avoid repeating the same mistake.",
+            "examples": [
+              "Round 2 opening: 'The verifier clearly indicates that: 1. The amide bond is NOT the disconnection point 2. The actual transformation is a nucleophilic aromatic substitution (SNAr) 3. A chloride on the pyridine ring is displaced by a morpholine nucleophile'",
+              "Explicit correction: 'Your disconnection is incorrect. You disconnected the amide bond, but the ground truth shows the amide is already present in one reactant.'"
+            ]
+          },
+          {
+            "rule": "Preserve stereochemistry when identifying reactants. If the product has stereogenic centers, ensure the corresponding reactant maintains the same stereochemistry.",
+            "examples": [
+              "The morpholine nucleophile correctly maintains stereochemistry: 'OC[C@H]1COCCN1' with the @H designation preserved from the product.",
+              "Verification step: 'The stereochemistry is preserved in the morpholine fragment.'"
+            ]
+          }
+        ],
+        "revised_trajectory": "Round 2 - LLM Generation:\n\n<comments>Excellent self-correction strategy: The solver immediately acknowledges the need to reconsider based on feedback rather than defending the original answer. This openness to revision is critical in iterative problem-solving.</comments>\n\nI need to reconsider the retrosynthesis based on the verifier's feedback.\n\n**Analysis of Verifier Feedback:**\n\n<comments>Outstanding practice: The solver explicitly restates the key points from the feedback, demonstrating active listening and ensuring correct understanding before proceeding. This prevents repeating the same mistake.</comments>\n\nThe verifier correctly identified that:\n1. This is NOT a urea formation reaction\n2. This is a **deprotection reaction** - specifically Cbz (benzyloxycarbonyl) deprotection\n3. The urea linkage already exists in the reactant\n4. The key difference between reactant and product is the protecting group on the ε-amino group of lysine\n\n**Product Structure Review:**\n- Product: COC(=O)[C@H](CCCCN)NC(=O)Nc1cc(OC)cc(C(C)(C)C)c1O\n- The lysine side chain has a FREE primary amine: CCCCN\n- The α-amino group has the urea linkage to the phenol\n\n<comments>Critical insight: The solver identifies the key structural feature - the FREE amine in the product. This is the pivot point for recognizing that a protecting group must have been removed.</comments>\n\n**Reactant Structure (Ground Truth):**\n- The reactant should have the same structure EXCEPT the ε-amino group is protected with Cbz\n- Cbz protecting group: -NC(=O)OCc1ccccc1 (also written as -NHCbz or -NHCO2Bn)\n- So the side chain should be: CCCCNC(=O)OCc1ccccc1\n\n<comments>Excellent chemical knowledge application: The solver correctly identifies the SMILES representation of the Cbz protecting group and knows its alternative nomenclature. This demonstrates both structural understanding and familiarity with protecting group chemistry.</comments>\n\n**Correct Retrosynthetic Analysis:**\nThe single-step transformation is:\n- **Cbz deprotection** of the ε-amino group\n- Reactant: COC(=O)[C@H](CCCCNC(=O)OCc1ccccc1)NC(=O)Nc1cc(OC)cc(C(C)(C)C)c1O\n- Product: COC(=O)[C@H](CCCCN)NC(=O)Nc1cc(OC)cc(C(C)(C)C)c1O\n\n<comments>Good practice: The solver explicitly writes out both reactant and product structures to verify the transformation makes sense. This side-by-side comparison helps catch errors.</comments>\n\nThis is typically done via:\n- Hydrogenolysis (H2/Pd-C) which cleaves the benzyl-oxygen bond\n- Or other Cbz deprotection conditions\n\n<comments>Valuable addition: Providing the typical reaction conditions (hydrogenolysis) shows deeper understanding of the chemistry and helps validate that this is indeed a reasonable single-step transformation.</comments>\n\n**Final Answer:**\nThe reactant is the Cbz-protected version of the product.\n\n<answer>COC(=O)[C@H](CCCCNC(=O)OCc1ccccc1)NC(=O)Nc1cc(OC)cc(C(C)(C)C)c1O</answer>\n\n<comments>Perfect execution: The final answer is correctly formatted with only the SMILES string in the answer tags, and the SMILES correctly represents the Cbz-protected reactant with all stereochemistry and functional groups preserved.</comments>",
+        "memory_type": "golden",
+        "problem_category": "retrosynthesis",
+        "priority": 5,
+        "created_at": "2025-10-13T19:10:38.925935",
+        "usage_count": 46,
+        "last_used": "2025-10-13T19:28:42.742878"
+      }
+    ],
+    "warning": [],
+    "mixed": []
+  },
+  "config": {
+    "retrieval_weights": {
+      "golden": 1.0,
+      "warning": 0.8,
+      "mixed": 0.9
+    }
+  }
+}
