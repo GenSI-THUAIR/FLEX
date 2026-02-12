@@ -1,0 +1,41 @@
+[project]
+name = "flex"
+version = "0.1.0"
+description = "The environment for FLEX (Forward Learning from Experience)."
+requires-python = ">=3.10"
+dependencies = [
+    "openai>=1.0.0",
+    "tqdm>=4.0.0",
+    "aiohttp>=3.8.0",
+    "httpx>=0.24.0",
+    "rdkit>=2025.9.1",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "black",
+    "flake8",
+]
+
+# Use setuptools as the build backend and configure discovery to avoid picking up data folders
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+# Explicitly list top-level Python modules to install in editable mode
+# This avoids setuptools trying to auto-discover folders like data/, exps/, logs/, etc.
+py-modules = [
+    "actor",
+    "agent",
+    "critic",
+    "explib",
+    "main",
+    "rate_limiter",
+    "test_mem",
+    "updater",
+]
+
+[tool.setuptools.packages.find]
+exclude = ["data*", "exps*", "logs*", "case_studies*"]
