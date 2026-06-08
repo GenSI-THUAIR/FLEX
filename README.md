@@ -1,20 +1,4 @@
-<div align="center">
-    <table style="width: 100%; border: none;">
-        <tr>
-            <td align="left" style="width: 50%; border: none;">
-                <img src="asset/seed_logo.png" height="20">
-            </td>
-            <td align="right" style="width: 50%; border: none;">
-                <img src="asset/AIRlogo.png" height="20" style="margin-right: 20px;">
-                <img src="asset/gensi_logo_black.png" height="20">
-            </td>
-        </tr>
-    </table>
-</div>
 
----
-
-<div align="center">
 
 # FLEX: Continuous Agent Evolution via Forward Learning from Experience
 
@@ -35,6 +19,10 @@ cd FLEX
 uv pip install -e .
 ``` -->
 
+
+## Dataset
+
+Pro-pocessed proteingym targets [here](https://zenodo.org/records/20592649). 
 
 
 ## Citation
