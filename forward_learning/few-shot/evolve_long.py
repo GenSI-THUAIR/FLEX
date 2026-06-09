@@ -16,7 +16,6 @@ from copy import deepcopy
 from biomni.agent import A1
 from biomni.agent import react
 
-PROFILE_PATH = "/ai4science-a100/yupei/data/ProteinGym/ProteinGym_split_63_filtered/protein_profile.csv"
 
 
 def add_md(df, md_fpath, n):
@@ -58,57 +57,30 @@ def add_proxy_metric_column(x_df: pd.DataFrame, test_df: pd.DataFrame, model_pat
 
 def main(args):
 
-    data_profile_df = pd.read_csv(PROFILE_PATH)
+    profile_path = os.path.join(args.input_dir, "protein_profile.csv")
+
+    data_profile_df = pd.read_csv(profile_path)
     data_profile_dict = data_profile_df.set_index('target').T.to_dict()
 
-    # 对于测试集中每一个数据，进行策略的self-evolving
-
-    # pujiang
-    # agent = A1(
-    #     path='./data', 
-    #     llm='claude-sonnet-4-20250514', 
-    #     base_url="https://api.boyuerichdata.opensphereai.com/", 
-    #     api_key="sk-xgYFUgHgSy1PlOaqXqWYpqZoB6nR6uYIPCBMhpWen9l896QJ",
-    #     timeout_seconds=172800,
-    #     # self_critic=True
-    # )
-
-    # # tsinghua
-    # agent = A1(
-    #     path='./data', 
-    #     llm='anthropic/claude-sonnet-4', 
-    #     base_url="http://103.242.175.254:20008/v1", 
-    #     api_key="sk-audit-wv7iFmrhKCapmecwx1VwvhRTbpPpJw30",
-    #     timeout_seconds=172800,
-    #     # self_critic=True
-    # )
 
 
-    if args.model == "gpt_oss":
-        if(args.mode == "react"):
-            agent = react(
-                path='./data',
-                llm='/data/xyguo/gpt-oss-120b',   
-                base_url="http://103.242.175.254:20011/v1",
-                api_key="not-needed",
-                timeout_seconds=172800,
-            )
-        else:
-            agent = A1(
-                path='./data',
-                llm='/data/xyguo/gpt-oss-120b',   # <- 如果你的服务需要完整路径就用这个；否则尝试 'gpt-oss-120b'
-                base_url="http://103.242.175.254:20011/v1",
-                api_key="not-needed",
-                timeout_seconds=172800,
-            )
-    else :
+
+    if(args.mode == "react"):
+        agent = react(
+            path='./data',
+            llm=args.llm,  
+            base_url=args.base_url,
+            api_key=args.api_key,
+            timeout_seconds=172800,
+        )
+    else:
         agent = A1(
-                    path='./data', 
-                    llm='gpt-4o', 
-                    base_url="http://14.103.213.146/suwen/v1",
-                    api_key="sk-audit-8Hn797H64m7iHiWsLnjjFs0EYY1QcQDy",
-                    timeout_seconds=172800,
-                )
+            path='./data',
+            llm=args.llm,   
+            base_url=args.base_url,
+            api_key=args.api_key,
+            timeout_seconds=172800,
+        )
 
     subdir = args.target_name
 
@@ -405,49 +377,12 @@ def main(args):
 
 
 
-
-
-
-        # # test and modify strategy
-        # top_script_dir = os.path.join(record_dir, f"step{step}", "top_proxy_metrics")
-        # while(not (os.path.exists(top_script_dir) and (len(os.listdir(top_script_dir)) == 3) and os.path.exists(os.path.join(record_dir, f"step{step}", f"test_data_with_proxy_metrics.csv"))) ):
-        #     if(os.path.exists(top_script_dir)):
-        #         shutil.rmtree(top_script_dir)
-
-        #     prompt = f"""
-        #     [Known Data]  
-
-        #         1. A dataset is stored in {next_test_data}. After reading it into a pd.DataFrame, the file contains the following columns:
-        #         - mutant: please ignore this column  
-        #         - mutated_sequence: please ignore this column  
-        #         - DMS_score_bin: please ignore this column  
-        #         - DMS_score: this is the target variable y calculating spearman correlation with 
-        #         - other columns: the remaining columns are experimentally measured floating-point values, which can be used as optional x features.
-
-        #         2. Python files in directory {os.path.join(record_dir, f"step{step}", "proxy_metrics")} stored several method to compte proxy metric using x features.
-        #         You may execute the file and call all functions in this file to saperately calculate different proxy metrics for each sample.
-
-        #     [Execution Steps]  
-        #         1. For each python script, get proxy metrics based on all x feature columns, each metric became a new column of DataFrame, save the whole DataFrame in file {os.path.join(record_dir, f"step{step}", f"test_data_with_proxy_metrics.csv")}.
-        #         2. calculate spearman correlation between each proxy metric and DMS_score column in step 1, store those correlations in file {os.path.join(record_dir, f"step{step}", "test_correlation.csv")}.
-        #         3. Copy python file of top 3 metrics into new folder {os.path.join(record_dir, f"step{step}", "top_proxy_metrics")}
-        #         Note: proxy_metric must be computed **only** from x feature columns, and cannot use the y column (DMS_score).
-
-        #     [Storage Requirement]  
-        #         Use the directory {os.path.join(record_dir, f"step{step}")} as the working directory.
-
-        #     """
-
-        #     agent.go(prompt)
-
-
-
-
-
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--input_dir", type=str)
     parser.add_argument("--record_dir", type=str)
+    parser.add_argument("--base_url", type=str)
+    parser.add_argument("--api_key", type=str)
     parser.add_argument("--model", type=str, default="claude4")
     parser.add_argument("--mode", type=str, default="biomni")
     parser.add_argument("--target_name", type=str)

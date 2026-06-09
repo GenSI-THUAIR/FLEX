@@ -12,7 +12,6 @@ from biomni.agent import A1
 from biomni.agent import react
 from tabulate import tabulate
 
-PROFILE_PATH = "/ai4science-a100/yupei/data/ProteinGym/ProteinGym_split_63_filtered/protein_profile.csv"
 
 def add_md(df, md_fpath, n):
     top_features = df["feature"].head(n)
@@ -38,82 +37,27 @@ def add_md(df, md_fpath, n):
 
 def main(args):
 
-    data_profile_df = pd.read_csv(PROFILE_PATH)
+    profile_path = os.path.join(args.input_dir, "protein_profile.csv")
+
+    data_profile_df = pd.read_csv(profile_path)
     data_profile_dict = data_profile_df.set_index('target').T.to_dict()
 
-    # 对于测试集中每一个数据，进行策略的self-evolving
-
-    # pujiang
-    # agent = A1(
-    #     path='./data', 
-    #     llm='claude-sonnet-4-20250514', 
-    #     base_url="https://api.boyuerichdata.opensphereai.com/", 
-    #     api_key="sk-xgYFUgHgSy1PlOaqXqWYpqZoB6nR6uYIPCBMhpWen9l896QJ",
-    #     timeout_seconds=172800,
-    #     # self_critic=True
-    # )
-
-    # # tsinghua
-    # agent = A1(
-    #     path='./data', 
-    #     llm='anthropic/claude-sonnet-4', 
-    #     base_url="http://103.242.175.254:20008/v1", 
-    #     api_key="sk-audit-wv7iFmrhKCapmecwx1VwvhRTbpPpJw30",
-    #     timeout_seconds=172800,
-    #     # self_critic=True
-    # )
-
-    if args.model == "gpt_oss":
-        if(args.mode == "react"):
-            agent = react(
-                path='./data',
-                llm='/data/xyguo/gpt-oss-120b',   
-                base_url="http://103.242.175.254:20012/v1",
-                api_key="not-needed",
-                timeout_seconds=172800,
-            )
-        else:
-            agent = A1(
-                path='./data',
-                llm='/data/xyguo/gpt-oss-120b',   # <- 如果你的服务需要完整路径就用这个；否则尝试 'gpt-oss-120b'
-                base_url="http://103.242.175.254:20012/v1",
-                api_key="not-needed",
-                timeout_seconds=172800,
-            )
-
-
-    elif(args.model == "deepseek"):
-        agent = A1(
+    if(args.mode == "react"):
+        agent = react(
             path='./data',
-            llm='tenant-wh:DeepSeek-V3.1-Terminus', 
-            base_url="http://14.103.213.146/suwen/v1",
-            api_key="sk-audit-GEZm5qvgGKIhLADwb0UAZJVRWZfw2VCs",
+            llm=args.llm,  
+            base_url=args.base_url,
+            api_key=args.api_key,
             timeout_seconds=172800,
         )
-    elif args.model == "qwen":
+    else:
         agent = A1(
             path='./data',
-            llm='Qwen/Qwen2.5-32B-Instruct', 
-            base_url="http://103.242.175.254:20012/v1",
-            api_key="sk-audit-8Hn797H64m7iHiWsLnjjFs0EYY1QcQDy",
+            llm=args.llm,   
+            base_url=args.base_url,
+            api_key=args.api_key,
             timeout_seconds=172800,
         )
-    elif args.model == "kimi":
-        agent = A1(
-            path='./data',
-            llm='moonshotai/kimi-k2-thinking', 
-            base_url="http://103.242.175.254:20012/v1",
-            api_key="sk-audit-8Hn797H64m7iHiWsLnjjFs0EYY1QcQDy",
-            timeout_seconds=172800,
-        )
-    else :
-        agent = A1(
-                    path='./data', 
-                    llm='gpt-4o', 
-                    base_url="http://14.103.213.146/suwen/v1",
-                    api_key="sk-audit-8Hn797H64m7iHiWsLnjjFs0EYY1QcQDy",
-                    timeout_seconds=172800,
-                )
  
 
     subdir = args.target_name
@@ -421,6 +365,8 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--input_dir", type=str)
     parser.add_argument("--record_dir", type=str)
+    parser.add_argument("--base_url", type=str)
+    parser.add_argument("--api_key", type=str)
     parser.add_argument("--model", type=str, default="claude4")
     parser.add_argument("--mode", type=str, default="biomni")
     parser.add_argument("--target_name", type=str)

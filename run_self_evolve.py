@@ -8,9 +8,8 @@ import subprocess
 from concurrent.futures import ProcessPoolExecutor, as_completed
 
 
-PROFILE_PATH = "/ai4science-a100/yupei/data/ProteinGym/ProteinGym_split_63_filtered/protein_profile.csv"
-
-
+BASE_URL = ""
+API_KEY = ""
 
 
 
@@ -21,7 +20,10 @@ def run_cmd(cmd):
 
 def main(args):
 
-    data_profile_df = pd.read_csv(PROFILE_PATH)
+
+    profile_path = os.path.join(args.input_dir, "protein_profile.csv")
+
+    data_profile_df = pd.read_csv(profile_path)
     data_profile_dict = data_profile_df.set_index('target').T.to_dict()
 
     time_str = datetime.now().strftime("%Y%m%d%H%M%S")
@@ -48,7 +50,7 @@ def main(args):
             output_fold_dir = os.path.join(output_subdir_path, f"{fold}_fold")
 
 
-            cmd = f"python ./forward_learning/{args.setting}/evolve_long.py --input_dir {fold_dir} --record_dir {output_fold_dir} --target_name {subdir} --strategy_nums {args.strategy_nums} --add_samples_num {args.add_samples_num} --model {args.model} --iters {args.iters} --train_ratio {args.train_ratio} --top_k {args.top_k}"
+            cmd = f"python ./forward_learning/{args.setting}/evolve_long.py --input_dir {fold_dir} --record_dir {output_fold_dir} --target_name {subdir} --strategy_nums {args.strategy_nums} --add_samples_num {args.add_samples_num} --model {args.model} --iters {args.iters} --train_ratio {args.train_ratio} --top_k {args.top_k} --base_url {args.base_url} --api_key {args.api_key}"
 
             futures.append(executor.submit(run_cmd, cmd))
 
@@ -61,8 +63,6 @@ def main(args):
 
             
 
-    # end_cmd = f"python gather_evolve_result.py --input_dir {args.input_dir}"
-    # os.system(end_cmd)
 
 
 
@@ -73,6 +73,8 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--input_dir", type=str, default="/ai4science-a100/yupei/data/ProteinGym/ProteinGym_split_63_filtered_test/")
     parser.add_argument("--output_dir", type=str, default="./logs/")
+    parser.add_argument("--base_url", type=str, default = BASE_URL)
+    parser.add_argument("--api_key", type=str, default = API_KEY)
     parser.add_argument("--setting", type=str, default="zero-shot")
     parser.add_argument("--fold", type=int, default=1)
     parser.add_argument("--model", type=str, default="gpt-4o")

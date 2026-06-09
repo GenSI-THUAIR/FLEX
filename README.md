@@ -20,9 +20,39 @@ uv pip install -e .
 ``` -->
 
 
-## Dataset
+## ProteinGYM Dataset
 
 Pro-pocessed proteingym targets [here](https://zenodo.org/records/20592649). 
+
+
+
+## Environment
+
+```bash
+pip install pandas biomni langchain_openai tabulate scipy joblib
+```
+
+env configuration file saved in `env.yml`
+
+
+## Quick-Start
+
+### STEP 1: Experience collection
+
+```bash
+python run_self_evolve.py --setting {zero-shot / few-shot} --input_dir {processed_data_dir} --base_url xxxx --api_key xxxx
+```
+
+this will create a sub-dir under /logs .
+
+### STEP 2: evaluation with experience library
+
+
+```bash
+python forward_learning/{setting}gather_evolve_result_long.py --input_dir {log_dir} --data_dir {processed_data_dir}
+```
+
+
 
 
 ## Citation
