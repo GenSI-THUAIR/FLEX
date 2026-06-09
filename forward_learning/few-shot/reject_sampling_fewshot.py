@@ -211,20 +211,6 @@ def main(args):
 
 
 
-    # for i in range(0, args.top_k):
-
-    #     os.makedirs(os.path.join(args.input_dir, "top_proxy_metrics"), exist_ok=True)
-        
-    #     colname, corr_val = sorted_cols[i]
-    #     summary["target"].append(colname)
-    #     summary["spearman_correlation"].append(corr_val)
-
-    #     # copy high-score method
-    #     src_fpath = os.path.join(method_dir, f"{colname}.py")
-    #     dst_fpath = os.path.join(args.input_dir, "top_proxy_metrics", f"{colname}.py")
-    #     shutil.copy(src_fpath, dst_fpath)
-
-    # summary_df = pd.DataFrame(summary)
 
     output_cross_valid_fpath = os.path.join(args.input_dir, f"top_{args.top_k}_valid.csv")
     summary_df.to_csv(output_cross_valid_fpath)

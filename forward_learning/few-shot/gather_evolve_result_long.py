@@ -115,10 +115,7 @@ def main(args):
             added_df = add_proxy_metric_column(added_df, test_input_df, model_fpath, top_metric, selected_columns)
 
         added_df["DMS_score"] = test_data_df["DMS_score"].values
-        # TODO 2: for each column startswith proxy, calculate spearman correlation between this column and DMS_score column
-        # sort those correlations from high to low value, then 
-        # fill in form of summary[f"proxy_metric_{i+1}_name"] by i_th highest correlation produced by python script filename
-        # fill i summary[f"proxy_metric_{i+1}_test_corr"] by correlation i_th highest value
+
         new_cols = top_metrics
         print(f"new_cols = {new_cols}")
 

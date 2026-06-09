@@ -10,15 +10,6 @@ The official codebase for our paper, FLEX: Continuous Agent Evolution via Forwar
 
 
 
-<!-- ### 1. Environment setup
-
-1. Install dependencies (we use `uv` in our scripts, but you can use any PEP 517 backend):
-
-```bash
-cd FLEX
-uv pip install -e .
-``` -->
-
 
 ## ProteinGYM Dataset
 
